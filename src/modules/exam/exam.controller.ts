@@ -30,6 +30,8 @@ import { GetAdminExamsQuery } from './handlers/queries/GetAdminExams.query';
 import { PagingDto } from 'src/shareDTO/Paging.dto';
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { GetExamsQuery } from './handlers/queries/GetUserExams.query';
+import { Department } from 'src/decorator/department.decorator';
+import { Semester } from 'src/decorator/semester.decorator';
 
 @Controller('exam')
 @ApiTags('exam')
@@ -42,29 +44,55 @@ export class ExamController {
   @Delete('admin/delete/:id')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AdminJwtGuard)
-  deleteAdmin(@Param('id') examId: string) {
-    return this.commandBus.execute(new DeleteAdminExamCommand(examId));
+  deleteAdmin(
+    @Param('id') examId: string,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new DeleteAdminExamCommand(examId, semester, department),
+    );
   }
 
   @Delete('delete/:id')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(TeacherJwtGuard)
-  delete(@Param('id') examId: string, @GetProfile() user: User) {
-    return this.commandBus.execute(new DeleteExamCommand(examId, user));
+  delete(
+    @Param('id') examId: string,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new DeleteExamCommand(examId, user, semester, department),
+    );
   }
 
   @Post('insert/admin')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AdminJwtGuard)
-  insertAdmin(@Body() dto: InserAdminExamRequestDto) {
-    return this.commandBus.execute(new InserAdminExamCommand(dto));
+  insertAdmin(
+    @Body() dto: InserAdminExamRequestDto,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new InserAdminExamCommand(dto, semester, department),
+    );
   }
 
   @Post('insert/teacher')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(TeacherJwtGuard)
-  insertTeacher(@Body() dto: InsertExamRequestDto, @GetProfile() user: User) {
-    return this.commandBus.execute(new InsertExamCommand(dto, user));
+  insertTeacher(
+    @Body() dto: InsertExamRequestDto,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new InsertExamCommand(dto, user, semester, department),
+    );
   }
 
   @Put('set/resulte/:id')
@@ -74,9 +102,11 @@ export class ExamController {
     @Body() dto: SetExamResultesRequestDto,
     @Param('id') examId: string,
     @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
   ) {
     return this.commandBus.execute(
-      new SetExamResultesCommand(dto, examId, user),
+      new SetExamResultesCommand(dto, examId, user, semester, department),
     );
   }
 
@@ -87,9 +117,11 @@ export class ExamController {
     @Body() dto: UpdateExamRequestDto,
     @Param('id') examId: string,
     @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
   ) {
     return this.commandBus.execute(
-      new UpdateAdminExamCommand(dto, examId, user),
+      new UpdateAdminExamCommand(dto, examId, user, semester, department),
     );
   }
 
@@ -100,23 +132,40 @@ export class ExamController {
     @Body() dto: UpdateExamRequestDto,
     @Param('id') examId: string,
     @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
   ) {
-    return this.commandBus.execute(new UpdateExamCommand(dto, examId, user));
+    return this.commandBus.execute(
+      new UpdateExamCommand(dto, examId, user, semester, department),
+    );
   }
 
   //queries
 
-  @Get('admin/exams/:id')
+  @Get('admin/exams')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AdminJwtGuard)
-  getAdminExams(@Query() paging: PagingDto) {
-    return this.queryBus.execute(new GetAdminExamsQuery(paging));
+  getAdminExams(
+    @Query() paging: PagingDto,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.queryBus.execute(
+      new GetAdminExamsQuery(paging, semester, department),
+    );
   }
 
-  @Get('exams/:id')
+  @Get('exams')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtGuard)
-  getExams(@Query() paging: PagingDto, @GetProfile() user: User) {
-    return this.queryBus.execute(new GetExamsQuery(paging, user));
+  getExams(
+    @Query() paging: PagingDto,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.queryBus.execute(
+      new GetExamsQuery(paging, user, semester, department),
+    );
   }
 }

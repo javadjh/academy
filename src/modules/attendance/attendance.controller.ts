@@ -21,6 +21,8 @@ import { TeacherJwtGuard } from 'src/guards/teacher-jwt.guard';
 import { GetAttendanceQuery } from './handlers/queries/GetAttendance.query';
 import { GetAdminAttendanceQuery } from './handlers/queries/GetAdminAttendance.query';
 import { JwtGuard } from 'src/guards/jwt.guard';
+import { Department } from 'src/decorator/department.decorator';
+import { Semester } from 'src/decorator/semester.decorator';
 
 @Controller('attendance')
 @ApiTags('attendance')
@@ -33,8 +35,15 @@ export class AttendanceController {
   @Post('')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(TeacherJwtGuard)
-  insert(@Body() dto: InsertAttendanceRequestDto, @GetProfile() user: User) {
-    return this.commandBus.execute(new InsertAttendanceCommand(dto, user));
+  insert(
+    @Body() dto: InsertAttendanceRequestDto,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new InsertAttendanceCommand(dto, user, semester, department),
+    );
   }
 
   //queries
@@ -42,14 +51,27 @@ export class AttendanceController {
   @Get('')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtGuard)
-  adminAttendancees(@GetProfile() user: User) {
-    return this.queryBus.execute(new GetAttendanceQuery(user));
+  adminAttendancees(
+    @Query('classId') classId: string,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.queryBus.execute(
+      new GetAttendanceQuery(user, classId, semester, department),
+    );
   }
 
   @Get('admin')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AdminJwtGuard)
-  studentAttendancees(@Query() paging: PagingDto) {
-    return this.queryBus.execute(new GetAdminAttendanceQuery(paging));
+  studentAttendancees(
+    @Query() paging: PagingDto,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.queryBus.execute(
+      new GetAdminAttendanceQuery(paging, semester, department),
+    );
   }
 }

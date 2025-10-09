@@ -20,6 +20,8 @@ class BaseExamModel extends BaseModel {}
 
 @Schema({ timestamps: true })
 export class Exam extends BaseExamModel {
+  resultesScore?: number;
+
   @Prop({ type: String, default: () => nanoid(10) })
   @ApiProperty()
   _id: string;
@@ -35,6 +37,12 @@ export class Exam extends BaseExamModel {
   @Prop({ type: String })
   @ApiProperty()
   time: string;
+
+  @Prop({ ref: 'Department', type: String })
+  department: string | any;
+
+  @Prop({ ref: 'Semester', type: String })
+  semester: string | any;
 
   @Prop({
     type: [
@@ -55,7 +63,7 @@ export class Exam extends BaseExamModel {
   @ApiProperty()
   students: Array<string | any>;
 
-  @Prop({ ref: 'Class', String })
+  @Prop({ ref: 'Class', type: String })
   @ApiProperty()
   class: string | any;
 

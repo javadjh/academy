@@ -7,7 +7,11 @@ import { InsertException } from 'src/filters/insertException.filter';
 import { Response } from 'src/config/response';
 
 export class InsertClassCommand {
-  constructor(public readonly dto: InsertClassRequestDto) {}
+  constructor(
+    public readonly dto: InsertClassRequestDto,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @CommandHandler(InsertClassCommand)
@@ -16,11 +20,16 @@ export class InsertClassHandler implements ICommandHandler<InsertClassCommand> {
     @InjectModel(Class.name) private readonly classModel: Model<ClassDocument>,
   ) {}
   async execute(command: InsertClassCommand): Promise<any> {
-    const { dto } = command;
+    const { dto, department, semester } = command;
 
     const newClass: Class = await new this.classModel({
       ...dto,
-      ...{ students: dto.studentIds, teacher: dto.teacherId },
+      ...{
+        students: dto.studentIds,
+        teacher: dto.teacherId,
+        department,
+        semester,
+      },
     }).save();
 
     if (!newClass?._id) throw new InsertException();

@@ -16,5 +16,5 @@ export class InsertClassRequestDto {
 
   @ApiProperty()
   @IsArray()
-  scheduleTimes: string;
+  scheduleTimes: any;
 }

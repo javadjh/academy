@@ -7,7 +7,11 @@ import { PagingDto } from 'src/shareDTO/Paging.dto';
 import { GlobalUtility } from 'src/utility/GlobalUtility';
 
 export class GetAdminExamsQuery {
-  constructor(public readonly paging: PagingDto) {}
+  constructor(
+    public readonly paging: PagingDto,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @QueryHandler(GetAdminExamsQuery)
@@ -19,10 +23,13 @@ export class GetAdminExamsHandler implements IQueryHandler<GetAdminExamsQuery> {
     const { eachPerPage, regex, skip } = GlobalUtility.pagingWrapper(
       query.paging,
     );
+    const { department, semester } = query;
 
     let filter = {
       $or: [{ title: regex }],
       isActive: true,
+      semester,
+      department,
     };
 
     const exams: Array<Exam> = await this.examModel
@@ -30,6 +37,8 @@ export class GetAdminExamsHandler implements IQueryHandler<GetAdminExamsQuery> {
       .limit(eachPerPage)
       .skip(skip)
       .sort({ date: -1 })
+      .populate('teacher', 'fullName')
+      .populate('class', 'title')
       .lean();
 
     const total: number = await this.examModel.find(filter).count();
@@ -40,7 +49,7 @@ export class GetAdminExamsHandler implements IQueryHandler<GetAdminExamsQuery> {
     });
 
     return Response.send({
-      exams,
+      list: exams,
       total,
     });
   }

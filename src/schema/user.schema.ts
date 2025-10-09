@@ -36,6 +36,12 @@ export class User extends BaseUserModel {
 
   @Prop({ type: Boolean, default: true })
   isActive?: boolean;
+
+  @Prop({ ref: 'Department', type: String })
+  department: string | any;
+
+  @Prop({ ref: 'Semester', type: String })
+  semester: string | any;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

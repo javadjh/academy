@@ -7,7 +7,11 @@ import { PagingDto } from 'src/shareDTO/Paging.dto';
 import { GlobalUtility } from 'src/utility/GlobalUtility';
 
 export class GetAdminUsersQuery {
-  constructor(public readonly paging: PagingDto) {}
+  constructor(
+    public readonly paging: PagingDto,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @QueryHandler(GetAdminUsersQuery)
@@ -22,12 +26,14 @@ export class GetAdminUsersHandler implements IQueryHandler<GetAdminUsersQuery> {
 
     const filter: any = {
       $or: [{ fullName: regex }],
+      isActive: true,
     };
 
     const users: Array<User> = await this.userModel
       .find(filter)
       .limit(eachPerPage)
       .skip(skip)
+      .sort({ createdAt: -1 })
       .select('-password')
       .lean();
 
@@ -39,7 +45,7 @@ export class GetAdminUsersHandler implements IQueryHandler<GetAdminUsersQuery> {
     const total: number = await this.userModel.find(filter).count();
 
     return Response.send({
-      users,
+      list: users,
       total,
     });
   }

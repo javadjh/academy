@@ -5,6 +5,8 @@ import { User, UserSchema } from './user.schema';
 import { Class, ClassSchema } from './class.schema';
 import { Exam, ExamSchema } from './exam.schema';
 import { Attendance, AttendanceSchema } from './Attendance.schema';
+import { Department, DepartmentSchema } from './department.schema';
+import { Semester, SemesterSchema } from './semester.schema';
 
 export default [
   MongooseModule.forFeature([{ name: City.name, schema: CitySchema }]),
@@ -12,6 +14,10 @@ export default [
   MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
   MongooseModule.forFeature([{ name: Exam.name, schema: ExamSchema }]),
+  MongooseModule.forFeature([{ name: Semester.name, schema: SemesterSchema }]),
+  MongooseModule.forFeature([
+    { name: Department.name, schema: DepartmentSchema },
+  ]),
   MongooseModule.forFeature([
     { name: Attendance.name, schema: AttendanceSchema },
   ]),

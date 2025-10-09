@@ -10,6 +10,8 @@ export class UpdateAdminUserCommand {
   constructor(
     public readonly dto: UpdateAdminUserRequestDto,
     public readonly userId: string,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -21,12 +23,14 @@ export class UpdateAdminUserHandler
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
   async execute(command: UpdateAdminUserCommand): Promise<any> {
-    const { dto, userId } = command;
+    const { dto, userId, department, semester } = command;
     const user: User = await this.userModel.findByIdAndUpdate(userId, {
       $set: {
         ...dto,
         ...{
           fullName: `${dto.firstName} ${dto?.lastName}`,
+          department,
+          semester,
         },
       },
     });

@@ -6,7 +6,11 @@ import { Response } from 'src/config/response';
 import { RecordNotFoundException } from 'src/filters/record-not-found.filter';
 
 export class DeleteAdminExamCommand {
-  constructor(public readonly examId: string) {}
+  constructor(
+    public readonly examId: string,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @CommandHandler(DeleteAdminExamCommand)
@@ -17,11 +21,13 @@ export class DeleteAdminExamHandler
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
   ) {}
   async execute(command: DeleteAdminExamCommand): Promise<any> {
-    const { examId } = command;
+    const { examId, department, semester } = command;
 
     let exam = await this.examModel.findOneAndUpdate(
       {
         _id: examId,
+        department,
+        semester,
       },
       {
         $set: { isActive: false },

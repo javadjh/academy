@@ -9,7 +9,11 @@ import { InsertException } from 'src/filters/insertException.filter';
 import { Response } from 'src/config/response';
 
 export class InsertAdminUserCommand {
-  constructor(public readonly dto: InsertAdminUserRequestDto) {}
+  constructor(
+    public readonly dto: InsertAdminUserRequestDto,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @CommandHandler(InsertAdminUserCommand)
@@ -20,13 +24,17 @@ export class InsertAdminUserHandler
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
   async execute(command: InsertAdminUserCommand): Promise<any> {
-    const { dto } = command;
+    const { dto, department, semester } = command;
 
     dto.password = await Password.generate(dto.password);
 
     const user: User = await new this.userModel({
       ...dto,
-      ...{ fullName: `${dto.firstName} ${dto?.lastName}` },
+      ...{
+        fullName: `${dto.firstName} ${dto?.lastName}`,
+        semester,
+        department,
+      },
     }).save();
 
     if (!user?._id) throw new InsertException();

@@ -10,6 +10,8 @@ export class UpdateClassCommand {
   constructor(
     public readonly dto: UpdateClassRequestDto,
     public readonly classId: string,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -19,12 +21,22 @@ export class UpdateClassHandler implements ICommandHandler<UpdateClassCommand> {
     @InjectModel(Class.name) private readonly classModel: Model<ClassDocument>,
   ) {}
   async execute(command: UpdateClassCommand): Promise<any> {
-    const { dto, classId } = command;
+    const { dto, classId, department, semester } = command;
+
+    console.log({ dto, classId });
 
     const updateClass: Class = await this.classModel.findByIdAndUpdate(
       classId,
       {
-        $set: { ...dto },
+        $set: {
+          ...dto,
+          ...{
+            teacher: dto.teacherId,
+            students: dto?.studentIds,
+            department,
+            semester,
+          },
+        },
       },
     );
 

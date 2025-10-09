@@ -10,6 +10,8 @@ export class DeleteExamCommand {
   constructor(
     public readonly examId: string,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -19,12 +21,14 @@ export class DeleteExamHandler implements ICommandHandler<DeleteExamCommand> {
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
   ) {}
   async execute(command: DeleteExamCommand): Promise<any> {
-    const { user, examId } = command;
+    const { user, examId, department, semester } = command;
 
     let exam = await this.examModel.findOneAndUpdate(
       {
         _id: examId,
         teacher: user?._id,
+        department,
+        semester,
       },
       {
         $set: { isActive: false },

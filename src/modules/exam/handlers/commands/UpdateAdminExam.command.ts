@@ -12,6 +12,8 @@ export class UpdateAdminExamCommand {
     public readonly dto: UpdateAdminExamRequestDto,
     public readonly examId: string,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -23,11 +25,17 @@ export class UpdateAdminExamHandler
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
   ) {}
   async execute(command: UpdateAdminExamCommand): Promise<any> {
-    const { dto, user, examId } = command;
+    const { dto, user, examId, department, semester } = command;
 
     const exam = await this.examModel.findByIdAndUpdate(examId, {
       ...dto,
-      ...{ students: dto.studentIds, class: dto.classId, teacher: user?._id },
+      ...{
+        students: dto.studentIds,
+        class: dto.classId,
+        teacher: user?._id,
+        department,
+        semester,
+      },
     });
 
     if (!exam?._id) throw new RecordNotFoundException();

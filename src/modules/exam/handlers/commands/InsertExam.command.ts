@@ -11,6 +11,8 @@ export class InsertExamCommand {
   constructor(
     public readonly dto: InsertExamRequestDto,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -20,11 +22,17 @@ export class InsertExamHandler implements ICommandHandler<InsertExamCommand> {
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
   ) {}
   async execute(command: InsertExamCommand): Promise<any> {
-    const { dto, user } = command;
+    const { dto, user, department, semester } = command;
 
     const exam = await new this.examModel({
       ...dto,
-      ...{ students: dto.studentIds, class: dto.classId, teacher: user?._id },
+      ...{
+        students: dto.studentIds,
+        class: dto.classId,
+        teacher: user?._id,
+        department,
+        semester,
+      },
     }).save();
 
     if (!exam?._id) throw new InsertException();

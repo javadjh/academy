@@ -12,6 +12,8 @@ export class SetExamResultesCommand {
     public readonly dto: SetExamResultesRequestDto,
     public readonly examId: string,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -23,11 +25,13 @@ export class SetExamResultesHandler
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
   ) {}
   async execute(command: SetExamResultesCommand): Promise<any> {
-    const { dto, examId, user } = command;
+    const { dto, examId, user, department, semester } = command;
 
     const exam = await this.examModel.findOne({
       _id: examId,
       teacher: user?._id,
+      department,
+      semester,
     });
 
     if (!exam?._id) throw new RecordNotFoundException();

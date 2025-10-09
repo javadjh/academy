@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
-import { genderEnumSchema } from 'src/schema/share/enums';
 import { genderEnum, userTypeEnum } from 'src/shareDTO/enums';
 
 export class InsertAdminUserRequestDto {

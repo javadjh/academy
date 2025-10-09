@@ -18,6 +18,8 @@ export class ScheduleTimes {
 
 @Schema({ timestamps: true })
 export class Class extends BaseClassModel {
+  scheduleTimesFormated: any;
+
   @Prop({ type: String, default: () => nanoid(10) })
   @ApiProperty()
   _id: string;
@@ -37,6 +39,12 @@ export class Class extends BaseClassModel {
   @Prop({ ref: 'User', type: String })
   @ApiProperty()
   teacher: string | any;
+
+  @Prop({ ref: 'Department', type: String })
+  department: string | any;
+
+  @Prop({ ref: 'Semester', type: String })
+  semester: string | any;
 
   @Prop({
     type: [

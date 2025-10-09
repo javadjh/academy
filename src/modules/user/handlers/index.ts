@@ -3,6 +3,8 @@ import { InsertAdminUserHandler } from './commands/InsertAdminUser.command';
 import { UpdateAdminUserHandler } from './commands/UpdateAdminUser.command';
 import { UserSeedingHandler } from './commands/UserSeeding.command';
 import { GetAdminUsersHandler } from './queries/GetAdminUsers.query';
+import { GetStudentsHandler } from './queries/GetStudents.query';
+import { GetTeachersHandler } from './queries/GetTeachers.query';
 import { LoginHandler } from './queries/Login.query';
 
 export default [
@@ -15,4 +17,6 @@ export default [
   //queries
   GetAdminUsersHandler,
   LoginHandler,
+  GetTeachersHandler,
+  GetStudentsHandler,
 ];

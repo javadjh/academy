@@ -7,9 +7,9 @@ export class InsertAttendanceRequestDto {
   @IsString()
   classId: string;
 
-  @ApiProperty()
-  @IsString()
-  teacherId: string;
+  // @ApiProperty()
+  // @IsString()
+  // teacherId: string;
 
   @ApiProperty()
   @IsArray()

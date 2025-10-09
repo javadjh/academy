@@ -6,7 +6,11 @@ import { Response } from 'src/config/response';
 import { RecordNotFoundException } from 'src/filters/record-not-found.filter';
 
 export class DeleteClassCommand {
-  constructor(public readonly classId: string) {}
+  constructor(
+    public readonly classId: string,
+    public readonly semester: string,
+    public readonly department: string,
+  ) {}
 }
 
 @CommandHandler(DeleteClassCommand)
@@ -15,10 +19,10 @@ export class DeleteClassHandler implements ICommandHandler<DeleteClassCommand> {
     @InjectModel(Class.name) private readonly classModel: Model<ClassDocument>,
   ) {}
   async execute(command: DeleteClassCommand): Promise<any> {
-    const { classId } = command;
+    const { classId, department, semester } = command;
 
-    const deleteClass: Class = await this.classModel.findByIdAndUpdate(
-      classId,
+    const deleteClass: Class = await this.classModel.findOneAndUpdate(
+      { _id: classId, department, semester },
       {
         $set: { isActive: false },
       },

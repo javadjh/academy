@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -24,6 +24,4 @@ import modules from './modules';
     ...modules,
   ],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {}
-}
+export class AppModule {}

@@ -1,6 +1,17 @@
 import { AttendanceModule } from './attendance/attendance.module';
 import { ClassModule } from './class/class.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { DepartmentModule } from './department/department.module';
 import { ExamModule } from './exam/exam.module';
+import { SemesterModule } from './semester/semester.module';
 import { UserModule } from './user/user.module';
 
-export default [UserModule, ClassModule, AttendanceModule, ExamModule];
+export default [
+  UserModule,
+  ClassModule,
+  AttendanceModule,
+  ExamModule,
+  DashboardModule,
+  DepartmentModule,
+  SemesterModule,
+];

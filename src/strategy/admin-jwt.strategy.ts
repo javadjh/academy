@@ -11,6 +11,7 @@ import {
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { User, UserDocument } from 'src/schema/user.schema';
+import { userTypeEnum } from 'src/shareDTO/enums';
 
 @Injectable()
 export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
@@ -33,7 +34,8 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
       console.log('* find from Redis *');
     }
 
-    if (!user?._id) throw new BadRequestException(ACCESS_ERROR_MESSAGE);
+    if (!user?._id || user?.userType != userTypeEnum.admin)
+      throw new BadRequestException(ACCESS_ERROR_MESSAGE);
 
     if (user?.isExit) throw new BadRequestException(IS_EXIT_ERROR_MESSAGE);
 

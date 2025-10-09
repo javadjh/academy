@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 
 export class InsertExamRequestDto {
   @ApiProperty()
@@ -15,7 +15,7 @@ export class InsertExamRequestDto {
   time: string;
 
   @ApiProperty()
-  @IsString()
+  @IsArray()
   studentIds: string;
 
   @ApiProperty()

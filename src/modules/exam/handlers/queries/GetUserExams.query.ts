@@ -11,6 +11,8 @@ export class GetExamsQuery {
   constructor(
     public readonly paging: PagingDto,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -21,6 +23,7 @@ export class GetExamsHandler implements IQueryHandler<GetExamsQuery> {
   ) {}
   async execute(query: GetExamsQuery): Promise<any> {
     const userId = query.user._id;
+    const { department, semester } = query;
     const { eachPerPage, regex, skip } = GlobalUtility.pagingWrapper(
       query.paging,
     );
@@ -28,6 +31,8 @@ export class GetExamsHandler implements IQueryHandler<GetExamsQuery> {
     let filter = {
       $or: [{ teacher: userId }, { students: { $in: [userId] } }],
       isActive: true,
+      semester,
+      department,
     };
 
     const exams: Array<Exam> = await this.examModel
@@ -35,6 +40,7 @@ export class GetExamsHandler implements IQueryHandler<GetExamsQuery> {
       .limit(eachPerPage)
       .skip(skip)
       .sort({ date: -1 })
+      .populate('students', 'fullName')
       .lean();
 
     const total: number = await this.examModel.find(filter).count();
@@ -45,7 +51,7 @@ export class GetExamsHandler implements IQueryHandler<GetExamsQuery> {
     });
 
     return Response.send({
-      exams,
+      list: exams,
       total,
     });
   }

@@ -11,6 +11,8 @@ export class InsertAttendanceCommand {
   constructor(
     public readonly dto: InsertAttendanceRequestDto,
     public readonly user: User,
+    public readonly semester: string,
+    public readonly department: string,
   ) {}
 }
 
@@ -23,12 +25,14 @@ export class InsertAttendanceHandler
     private readonly attendanceModel: Model<AttendanceDocument>,
   ) {}
   async execute(command: InsertAttendanceCommand): Promise<any> {
-    const { dto, user } = command;
+    const { dto, user, department, semester } = command;
 
     const attendance: Attendance = await new this.attendanceModel({
       class: dto.classId,
       teacher: user?._id,
       attendanceList: dto.attendanceList,
+      department,
+      semester,
     }).save();
 
     if (!attendance?._id) throw new RecordNotFoundException();

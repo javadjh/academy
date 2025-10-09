@@ -7,7 +7,11 @@ import { User, UserDocument } from 'src/schema/user.schema';
 import { userTypeEnum } from 'src/shareDTO/enums';
 
 export class GetStudentsQuery {
-  constructor(public readonly classId: string) {}
+  constructor(
+    public readonly classId: string,
+    public readonly department: string,
+    public readonly semester: string,
+  ) {}
 }
 
 @QueryHandler(GetStudentsQuery)
@@ -18,6 +22,7 @@ export class GetStudentsHandler implements IQueryHandler<GetStudentsQuery> {
     @InjectModel(Class.name) private readonly classModel: Model<ClassDocument>,
   ) {}
   async execute(query: GetStudentsQuery): Promise<any> {
+    const { department, semester } = query;
     let classId = query.classId;
     if (classId) {
       let classItem = await this.classModel
@@ -37,7 +42,7 @@ export class GetStudentsHandler implements IQueryHandler<GetStudentsQuery> {
     }
 
     const students = await this.userModel
-      .find({ userType: userTypeEnum.student })
+      .find({ userType: userTypeEnum.student, department, semester })
       .select('fullName _id');
 
     let list = [];

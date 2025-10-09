@@ -4,6 +4,7 @@ import { UpdateClassHandler } from './commands/UpdateClass.command';
 import { GetClassesHandler } from './queries/GetClasses.query';
 import { GetClassesSelectHandler } from './queries/GetClassesSelect.query';
 import { GetStudentClassesHandler } from './queries/GetStudentClasses.query';
+import { GetStudentsListHandler } from './queries/GetStudentsList.query';
 import { GetTeacherClassesHandler } from './queries/GetTeacherClasses.query';
 
 export default [
@@ -17,4 +18,5 @@ export default [
   GetStudentClassesHandler,
   GetTeacherClassesHandler,
   GetClassesSelectHandler,
+  GetStudentsListHandler,
 ];

@@ -29,6 +29,7 @@ import { JwtGuard } from 'src/guards/jwt.guard';
 import { GetClassesSelectQuery } from './handlers/queries/GetClassesSelect.query';
 import { Department } from 'src/decorator/department.decorator';
 import { Semester } from 'src/decorator/semester.decorator';
+import { GetStudentsListQuery } from './handlers/queries/GetStudentsList.query';
 
 @Controller('class')
 @ApiTags('class')
@@ -129,6 +130,21 @@ export class ClassController {
   ) {
     return this.queryBus.execute(
       new GetClassesSelectQuery(user, semester, department),
+    );
+  }
+
+  @Get('students/list')
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AdminJwtGuard)
+  studentsListSelect(
+    @Query('classId') classId: any,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    console.log(classId);
+
+    return this.queryBus.execute(
+      new GetStudentsListQuery(classId, semester, department),
     );
   }
 }

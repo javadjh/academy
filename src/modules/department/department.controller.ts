@@ -33,7 +33,7 @@ export class DepartmentController {
     return this.commandBus.execute(new DeleteDepartmentCommand(departmentId));
   }
 
-  @Post('insert')
+  @Post('')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AdminJwtGuard)
   insertAdmin(@Body() dto: InsertDepartmentRequestDto) {
@@ -54,9 +54,7 @@ export class DepartmentController {
 
   //queries
 
-  @Get('departments')
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminJwtGuard)
+  @Get('')
   getDepartments() {
     return this.queryBus.execute(new GetDepartmentsQuery());
   }

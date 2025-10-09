@@ -53,8 +53,6 @@ export class SemesterController {
   //queries
 
   @Get('')
-  @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminJwtGuard)
   getSemesters() {
     return this.queryBus.execute(new GetSemestersQuery());
   }

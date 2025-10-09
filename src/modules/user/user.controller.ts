@@ -125,8 +125,14 @@ export class UserController {
   @Get('student')
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtGuard)
-  students(@Query('classId') classId: string) {
-    return this.queryBus.execute(new GetStudentsQuery(classId));
+  students(
+    @Query('classId') classId: string,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.queryBus.execute(
+      new GetStudentsQuery(classId, department, semester),
+    );
   }
 
   @Post('login')

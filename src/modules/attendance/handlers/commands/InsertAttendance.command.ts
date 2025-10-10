@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { User } from 'src/schema/user.schema';
 import { InsertAttendanceRequestDto } from '../../dto/request/InsertAttendanceRequest.dto';
-import { Attendance, AttendanceDocument } from 'src/schema/Attendance.schema';
+import { Attendance, AttendanceDocument } from 'src/schema/attendance.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RecordNotFoundException } from 'src/filters/record-not-found.filter';

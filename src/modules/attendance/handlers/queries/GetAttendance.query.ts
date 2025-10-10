@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Response } from 'src/config/response';
-import { Attendance, AttendanceDocument } from 'src/schema/Attendance.schema';
+import { Attendance, AttendanceDocument } from 'src/schema/attendance.schema';
 import { Class, ClassDocument } from 'src/schema/class.schema';
 import { User } from 'src/schema/user.schema';
 import { userTypeEnum } from 'src/shareDTO/enums';

@@ -4,7 +4,7 @@ import { File, FileSchema } from './file.schema';
 import { User, UserSchema } from './user.schema';
 import { Class, ClassSchema } from './class.schema';
 import { Exam, ExamSchema } from './exam.schema';
-import { Attendance, AttendanceSchema } from './Attendance.schema';
+import { Attendance, AttendanceSchema } from './attendance.schema';
 import { Department, DepartmentSchema } from './department.schema';
 import { Semester, SemesterSchema } from './semester.schema';
 

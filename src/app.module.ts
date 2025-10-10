@@ -11,7 +11,7 @@ import modules from './modules';
 
     MongooseModule.forRoot(
       // 'mongodb://scan_user:A_NEW_PASSWORD_FOR_SCAN_DB@127.0.0.1:27017/scan_db',
-
+// 'mongodb://root:gCaThvLHEpci1MUmsPiTTrBI@academy:27017/academy?authSource=admin'
       'mongodb://127.0.0.1:27017/academy',
     ),
     ScheduleModule.forRoot(),

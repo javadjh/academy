@@ -31,6 +31,7 @@ export class InserAdminExamHandler
         class: dto.classId,
         teacher: dto.teacherId,
         department,
+        classGroup: dto.classGroupId,
         semester,
       },
     }).save();

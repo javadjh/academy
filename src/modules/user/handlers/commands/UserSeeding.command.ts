@@ -23,7 +23,7 @@ export class UserSeedingHandler implements ICommandHandler<UserSeedingCommand> {
   ) {}
   async execute(command: UserSeedingCommand): Promise<any> {
     const user = await this.userModel.findOne({
-      userType: userTypeEnum.admin,
+      userType: userTypeEnum.super_admin,
     });
 
     const semester = await this.semesterModel.findOne();
@@ -33,12 +33,12 @@ export class UserSeedingHandler implements ICommandHandler<UserSeedingCommand> {
     // if (user?._id) {
     let password: string = await Password.generate('Admin5151@');
     await new this.userModel({
-      phoneNumber: '09000000000',
+      phoneNumber: '09111111111',
       password,
       firstName: 'javad',
       lastName: 'hojati',
       gender: genderEnum.men,
-      userType: userTypeEnum.admin,
+      userType: userTypeEnum.super_admin,
     }).save();
     // }
 

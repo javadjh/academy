@@ -46,6 +46,9 @@ export class Class extends BaseClassModel {
   @Prop({ ref: 'Semester', type: String })
   semester: string | any;
 
+  @Prop({ ref: 'ClassGroup', type: String })
+  classGroup: string | any;
+
   @Prop({
     type: [
       {

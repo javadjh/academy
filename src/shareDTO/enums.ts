@@ -6,6 +6,7 @@ export enum smsTypeEnum {
 }
 
 export enum userTypeEnum {
+  super_admin = 'super_admin',
   admin = 'admin',
   student = 'student',
   teacher = 'teacher',

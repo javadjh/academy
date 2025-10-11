@@ -9,7 +9,7 @@ export class InsertAttendanceRequestDto {
 
   // @ApiProperty()
   // @IsString()
-  // teacherId: string;
+  // score: string;
 
   @ApiProperty()
   @IsArray()

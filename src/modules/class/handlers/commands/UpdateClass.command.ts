@@ -35,6 +35,7 @@ export class UpdateClassHandler implements ICommandHandler<UpdateClassCommand> {
             students: dto?.studentIds,
             department,
             semester,
+            classGroup: dto.classGroupId,
           },
         },
       },

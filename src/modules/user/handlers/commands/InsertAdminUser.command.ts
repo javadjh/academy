@@ -7,6 +7,7 @@ import { Password } from 'src/utility/password';
 import passport from 'passport';
 import { InsertException } from 'src/filters/insertException.filter';
 import { Response } from 'src/config/response';
+import { RecordRepeatedException } from 'src/filters/record-repeated.filter';
 
 export class InsertAdminUserCommand {
   constructor(
@@ -25,6 +26,11 @@ export class InsertAdminUserHandler
   ) {}
   async execute(command: InsertAdminUserCommand): Promise<any> {
     const { dto, department, semester } = command;
+
+    const userFound = await this.userModel.findOne({
+      phoneNumber: dto.phoneNumber,
+    });
+    if (userFound?._id) throw new RecordRepeatedException();
 
     dto.password = await Password.generate(dto.password);
 

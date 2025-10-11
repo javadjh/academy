@@ -33,6 +33,7 @@ export class UpdateAdminExamHandler
         students: dto.studentIds,
         class: dto.classId,
         teacher: user?._id,
+        classGroup: dto.classGroupId,
         department,
         semester,
       },

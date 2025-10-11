@@ -2,17 +2,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 
 export class InsertClassRequestDto {
+  studentIds: any;
+
   @ApiProperty()
   @IsString()
   title: string;
 
   @ApiProperty()
   @IsString()
-  teacherId: string;
+  classGroupId: string;
 
   @ApiProperty()
-  @IsArray()
-  studentIds: string;
+  @IsString()
+  teacherId: string;
 
   @ApiProperty()
   @IsArray()

@@ -12,6 +12,10 @@ export class InsertExamRequestDto {
 
   @ApiProperty()
   @IsString()
+  classGroupId: string;
+
+  @ApiProperty()
+  @IsString()
   time: string;
 
   @ApiProperty()

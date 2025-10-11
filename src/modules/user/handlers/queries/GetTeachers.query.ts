@@ -16,7 +16,7 @@ export class GetTeachersHandler implements IQueryHandler<GetTeachersQuery> {
   ) {}
   async execute(query: GetTeachersQuery): Promise<any> {
     const teachers = await this.userModel
-      .find({ userType: userTypeEnum.teacher })
+      .find({ userType: userTypeEnum.teacher, isActive: true })
       .select('fullName _id');
 
     let list = [];

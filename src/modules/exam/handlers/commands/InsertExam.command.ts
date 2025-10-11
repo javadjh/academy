@@ -30,6 +30,7 @@ export class InsertExamHandler implements ICommandHandler<InsertExamCommand> {
         students: dto.studentIds,
         class: dto.classId,
         teacher: user?._id,
+        classGroup: dto.classGroupId,
         department,
         semester,
       },

@@ -23,6 +23,7 @@ import { GetAdminAttendanceQuery } from './handlers/queries/GetAdminAttendance.q
 import { JwtGuard } from 'src/guards/jwt.guard';
 import { Department } from 'src/decorator/department.decorator';
 import { Semester } from 'src/decorator/semester.decorator';
+import { UpdateAttendanceCommand } from './handlers/commands/UpdateAttendance.command';
 
 @Controller('attendance')
 @ApiTags('attendance')
@@ -43,6 +44,21 @@ export class AttendanceController {
   ) {
     return this.commandBus.execute(
       new InsertAttendanceCommand(dto, user, semester, department),
+    );
+  }
+
+  @Put('update/:id')
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(TeacherJwtGuard)
+  update(
+    @Body() dto: InsertAttendanceRequestDto,
+    @Param('id') id: string,
+    @GetProfile() user: User,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new UpdateAttendanceCommand(dto, user, id, semester, department),
     );
   }
 

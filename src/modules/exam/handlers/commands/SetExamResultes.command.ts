@@ -3,9 +3,10 @@ import { SetExamResultesRequestDto } from '../../dto/request/SetExamResultesRequ
 import { InjectModel } from '@nestjs/mongoose';
 import { Exam, ExamDocument } from 'src/schema/exam.schema';
 import { Model } from 'mongoose';
-import { User } from 'src/schema/user.schema';
+import { User, UserDocument } from 'src/schema/user.schema';
 import { RecordNotFoundException } from 'src/filters/record-not-found.filter';
 import { Response } from 'src/config/response';
+import { Sms } from 'src/config/Sms';
 
 export class SetExamResultesCommand {
   constructor(
@@ -23,6 +24,7 @@ export class SetExamResultesHandler
 {
   constructor(
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
   ) {}
   async execute(command: SetExamResultesCommand): Promise<any> {
     const { dto, examId, user, department, semester } = command;
@@ -39,6 +41,17 @@ export class SetExamResultesHandler
     exam.resultes = dto.resultes;
 
     await exam.save();
+
+    const sutudents: Array<any> = await this.userModel.find({
+      _id: { $in: exam.students },
+    });
+
+    let phoneNumbers = [];
+    for (let i = 0; i < sutudents.length; i++) {
+      const element = sutudents[i];
+      phoneNumbers.push(element?.phoneNumber);
+    }
+    await Sms.sendSms(phoneNumbers, 'نتایج یک آزمون جدید منتشر شد');
 
     return Response.updated();
   }

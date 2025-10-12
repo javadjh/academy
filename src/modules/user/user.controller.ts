@@ -4,13 +4,21 @@ import {
   Delete,
   Get,
   Param,
+  ParseFilePipe,
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ActionDto } from 'src/shareDTO/action.dto';
 import { AdminJwtGuard } from 'src/guards/admin-jwt.guard';
 import { InsertAdminUserRequestDto } from './dto/request/InsertAdminUserRequest.dto';
@@ -30,6 +38,9 @@ import { GetProfile } from 'src/decorator/get-profile.decorator';
 import { User } from 'src/schema/user.schema';
 import { Department } from 'src/decorator/department.decorator';
 import { Semester } from 'src/decorator/semester.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { InsertFromExcelCommand } from './handlers/commands/InsertFromExcel.commad';
+import { multerConfig } from 'src/config/fileConfig';
 
 @Controller('user')
 @ApiTags('user')
@@ -59,6 +70,23 @@ export class UserController {
   ) {
     return this.commandBus.execute(
       new InsertAdminUserCommand(dto, semester, department),
+    );
+  }
+
+  @Post('excel')
+  // @ApiBearerAuth('JWT-auth')
+  // @UseGuards(AdminJwtGuard)
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
+  insertExcel(
+    @UploadedFile(new ParseFilePipe({}))
+    file: Express.Multer.File,
+    @Department() department: string,
+    @Semester() semester: string,
+  ) {
+    return this.commandBus.execute(
+      new InsertFromExcelCommand(file, semester, department),
     );
   }
 

@@ -5,18 +5,15 @@ import { smsTypeEnum } from 'src/shareDTO/enums';
 
 @Injectable()
 export class Sms {
-  static async sendSms(
-    phoneNumber: string,
-    textList: Array<any>,
-    smsPattern: smsTypeEnum,
-  ) {
+  static async sendSms(phoneNumber: Array<any>, text: string) {
     try {
       await axios.post(
-        `https://console.melipayamak.com/api/send/shared/e57a46ef7be2405e93a210871412b8ef`,
+        `https://console.melipayamak.com/api/send/advanced/8a19c527f9d04da3bd5cc1e2a9a9632a`,
         {
-          bodyId: smsPattern,
+          from: '50002710000126',
           to: phoneNumber,
-          args: textList,
+          text: `${text}\nلغو11`,
+          udh: '',
         },
       );
     } catch (error) {

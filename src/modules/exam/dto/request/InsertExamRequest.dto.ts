@@ -18,9 +18,7 @@ export class InsertExamRequestDto {
   @IsString()
   time: string;
 
-  @ApiProperty()
-  @IsArray()
-  studentIds: string;
+  studentIds: Array<string>;
 
   @ApiProperty()
   @IsString()

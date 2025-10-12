@@ -5,6 +5,9 @@ import { Exam, ExamDocument } from 'src/schema/exam.schema';
 import { Model } from 'mongoose';
 import { InsertException } from 'src/filters/insertException.filter';
 import { Response } from 'src/config/response';
+import { User, UserDocument } from 'src/schema/user.schema';
+import { Sms } from 'src/config/Sms';
+import { ClassGroup, ClassGroupDocument } from 'src/schema/class-group.schema';
 
 export class InserAdminExamCommand {
   constructor(
@@ -20,9 +23,15 @@ export class InserAdminExamHandler
 {
   constructor(
     @InjectModel(Exam.name) private readonly examModel: Model<ExamDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(ClassGroup.name)
+    private readonly classGroupModel: Model<ClassGroupDocument>,
   ) {}
   async execute(command: InserAdminExamCommand): Promise<any> {
     const { dto, department, semester } = command;
+
+    dto.studentIds =
+      (await this.classGroupModel.findById(dto.classGroupId))?.students || [];
 
     const exam = await new this.examModel({
       ...dto,
@@ -37,6 +46,17 @@ export class InserAdminExamHandler
     }).save();
 
     if (!exam?._id) throw new InsertException();
+
+    const sutudents: Array<any> = await this.userModel.find({
+      _id: { $in: dto.studentIds },
+    });
+
+    let phoneNumbers = [];
+    for (let i = 0; i < sutudents.length; i++) {
+      const element = sutudents[i];
+      phoneNumbers.push(element?.phoneNumber);
+    }
+    await Sms.sendSms(phoneNumbers, 'آزمون جدیدی برای شما ایجاد شده');
 
     return Response.inserted();
   }

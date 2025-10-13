@@ -29,6 +29,8 @@ export class LoginHandler implements IQueryHandler<LoginQuery> {
       phoneNumber,
     });
 
+    console.log(user);
+
     if (!(await Password.compare(password, user.password)))
       throw new RecordNotFoundException();
 

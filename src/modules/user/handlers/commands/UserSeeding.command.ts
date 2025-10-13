@@ -33,7 +33,7 @@ export class UserSeedingHandler implements ICommandHandler<UserSeedingCommand> {
     // if (user?._id) {
     let password: string = await Password.generate('Admin5151@');
     await new this.userModel({
-      phoneNumber: '09111111111',
+      phoneNumber: '09123456789',
       password,
       firstName: 'javad',
       lastName: 'hojati',

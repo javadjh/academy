@@ -26,21 +26,21 @@ export class UserSeedingHandler implements ICommandHandler<UserSeedingCommand> {
       userType: userTypeEnum.super_admin,
     });
 
-    const semester = await this.semesterModel.findOne();
+    const semester = await this.semesterModel.findOne({ isActive: true });
 
-    const department = await this.semesterModel.findOne();
+    const department = await this.semesterModel.findOne({ isActive: true });
 
-    // if (user?._id) {
-    let password: string = await Password.generate('Admin5151@');
-    await new this.userModel({
-      phoneNumber: '09090909090',
-      password,
-      firstName: 'javad',
-      lastName: 'hojati',
-      gender: genderEnum.men,
-      userType: userTypeEnum.super_admin,
-    }).save();
-    // }
+    if (user?._id) {
+      let password: string = await Password.generate('Admin5151@');
+      await new this.userModel({
+        phoneNumber: '09090909090',
+        password,
+        firstName: 'javad',
+        lastName: 'hojati',
+        gender: genderEnum.men,
+        userType: userTypeEnum.super_admin,
+      }).save();
+    }
 
     if (!semester?._id) {
       await new this.semesterModel({

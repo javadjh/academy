@@ -34,7 +34,8 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
       console.log('* find from Redis *');
     }
 
-    if (!user?._id || user?.userType != userTypeEnum.admin)
+    console.log(user);
+    if (!user?._id ||( user?.userType != userTypeEnum.admin && user?.userType != userTypeEnum.super_admin))
       throw new BadRequestException(ACCESS_ERROR_MESSAGE);
 
     if (user?.isExit) throw new BadRequestException(IS_EXIT_ERROR_MESSAGE);

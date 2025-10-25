@@ -31,7 +31,7 @@ export class UpdateExamHandler implements ICommandHandler<UpdateExamCommand> {
       ...dto,
       ...{
         students: dto.studentIds,
-        class: dto.classId,
+        // class: dto.classId,
         teacher: user?._id,
         classGroup: dto.classGroupId,
         department,

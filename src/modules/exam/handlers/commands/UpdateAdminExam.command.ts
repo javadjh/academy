@@ -39,7 +39,7 @@ export class UpdateAdminExamHandler
       ...dto,
       ...{
         students: dto.studentIds,
-        class: dto.classId,
+        // class: dto.classId,
         teacher: user?._id,
         classGroup: dto.classGroupId,
         department,

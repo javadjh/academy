@@ -20,7 +20,7 @@ export class InsertExamRequestDto {
 
   studentIds: Array<string>;
 
-  @ApiProperty()
-  @IsString()
-  classId: string;
+  // @ApiProperty()
+  // @IsString()
+  // classId: string;
 }

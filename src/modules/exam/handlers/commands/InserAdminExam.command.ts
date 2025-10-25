@@ -37,7 +37,7 @@ export class InserAdminExamHandler
       ...dto,
       ...{
         students: dto.studentIds,
-        class: dto.classId,
+        // class: dto.classId,
         teacher: dto.teacherId,
         department,
         classGroup: dto.classGroupId,

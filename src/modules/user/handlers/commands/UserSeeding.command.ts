@@ -30,7 +30,7 @@ export class UserSeedingHandler implements ICommandHandler<UserSeedingCommand> {
 
     const department = await this.semesterModel.findOne({ isActive: true });
 
-    if (user?._id) {
+    if (!user?._id) {
       let password: string = await Password.generate('Admin5151@');
       await new this.userModel({
         phoneNumber: '09090909090',

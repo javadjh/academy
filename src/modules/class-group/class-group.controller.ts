@@ -17,6 +17,7 @@ import { InsertClassGroupCommand } from './handlers/commands/InsertClassGroup.co
 import { UpdateClassGroupRequestDto } from './dto/request/UpdateClassGroupRequest.dto';
 import { GetClassGroupsQuery } from './handlers/queries/GetClassGroups.query';
 import { UpdateClassGroupCommand } from './handlers/commands/UpdateClassGroup.command';
+import { JwtGuard } from 'src/guards/jwt.guard';
 
 @Controller('class-group')
 @ApiTags('class-group')
@@ -56,7 +57,7 @@ export class ClassGroupController {
 
   @Get('')
   @ApiBearerAuth('JWT-auth')
-  @UseGuards(AdminJwtGuard)
+  @UseGuards(JwtGuard)
   getClassGroups() {
     return this.queryBus.execute(new GetClassGroupsQuery());
   }

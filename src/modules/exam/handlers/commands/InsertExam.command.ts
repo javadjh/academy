@@ -32,7 +32,9 @@ export class InsertExamHandler implements ICommandHandler<InsertExamCommand> {
     dto.studentIds =
       (await this.classGroupModel.findById(dto.classGroupId))?.students || [];
 
+    console.log(dto);
     console.log(dto.studentIds);
+    console.log(await this.classGroupModel.find());
     console.log(await this.classGroupModel.findById(dto.classGroupId));
 
     const exam = await new this.examModel({
